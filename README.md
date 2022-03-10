@@ -5,8 +5,6 @@ to les Mines PariTech on the 11th of March 2022.
 
 You can find [here the slides of the class][slides].
 
-This repository contains ...
-
 ## Requirements
 
 To get started, clone it and prepare a new virtual env.
@@ -54,31 +52,18 @@ In any case it is good to have an idea of how things work under the hood!
 Insite the `pl_hydra` folder, I provide the same pipeline, but using PyTorch-Lightning along with [Hydra][hydra],
 as an alternative to `argparse`.
 
-## Dora based training pipeline
+```
+python -m pl_hydra.train optim.lr=0.1 model=mobilenet_v2
+```
 
-Finally, `dora_train` contains the same pipeline using both PyTorch-Lightning, Hydra and [Dora][dora].
 
 ## Using existing frameworks:
 
-At this point, it is a good time to introduce a few frameworks you might want to use for your project,
-replacing or completing what we have done so far.
-
-### Stool
-
-For simple grid search cases, I recommend the [stool](https://github.com/fairinternal/stool)
-tool. In one line of shell, you can schedule remote jobs, and perform grid searches
-based on a json specification. Unlike the solution we developed in `schedule.py`,
-`stool` does not ensure that a single job is assigned to a given experiment, and one must be careful
-not to schedule multiple time an experiment.
-
-After having followed the installation procedure, you could easily schedule a remote job with
-```
-stool run ./train.py
-```
+At this point, it is a good time to introduce a few frameworks you might want to use for your projects.
 
 ### Hydra
 
-[Hydra]() handles things like logging, configuration parsing (based on YAML files, which is a bit nicer
+[Hydra][hydra] handles things like logging, configuration parsing (based on YAML files, which is a bit nicer
 than argparse, especially for large projects), and also has support for some grid search scheduling
 with a dedicated language. It also supports meta-optimizers like Nevergrad (see after).
 
@@ -90,37 +75,56 @@ It can be used to automatically tune your model or optimization hyper-parameters
 
 ### PyTorch-Lightning
 
-[PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) takes care of logging, distributed
+[PyTorch Lightning][pl] takes care of logging, distributed
 training, checkpointing and many more boilerplate parts of a deep learning research project.
 It is powerful but also quite complex, and you will lose some control over the training pipeline.
 
 ### Dora
 
-[Dora](https://github.com/fairinternal/dora) is an experiment management framework.
-The core concepts are similar to what we defined in `schedule.py` and `grid.py`:
+[Dora](https://github.com/fairinternal/dora) is an experiment management framework:
 - Grid searches are expressed as pure python.
 - Experiments have an automatic signature assigned based on its args.
 - Keeps in sync experiments defined in grid files, and those running on the cluster.
 - Basic terminal based reporting of job states, metrics etc.
 
-Dora allows you to scale up to dozens of grid searches in parallel with hundreds of
-experiments without losing your sanity.
+Dora allows you to scale up to hundreds of experiments without losing your sanity.
 
-### HiPlot
+### Plotting and monitoring utilities
 
+While it is always good to have basic metric reporting inside logs, it can be
+more conveniant to track experimental progress through a web browser.
+[TensorBoard](https://github.com/tensorflow/tensorboard), initially developed for TensorFlow
+provide just that. A fully hosted alternative is [Wandb](https://wandb.ai/).
+Finally, [HiPlot](https://github.com/facebookresearch/hiplot) is a lightweight package
+to easily make sense of the impact of hyperparameters on the metrics of interest.
 
-[HiPlot](https://github.com/facebookresearch/hiplot) or
+### Unix tools
 
-### Tensorboard
+It is a good idea to learn to master the standard Unix/Linux tools!
+For large scale machine learning, you will often have to run experiments on a remote cluster,
+with only SSH access. `tmux` is a must have, as well as knowing at least of
+one terminal based file editor (`nano` is the simplest, `emacs` or `vim` are more complex
+but quite powerful). Take some time to learn about tuning your `bashrc`, setting up
+aliases for often used commands etc.
 
-	[TensorBoard](https://github.com/tensorflow/tensorboard)
+You will probably need tools like `grep`, `less`, `find` or `ack`.
+I personnaly really enjoy [fd](https://github.com/sharkdp/fd), an alternative to `find`
+with some intuitive interface. Similarly [ag](https://github.com/ggreer/the_silver_searcher)
+is a nice way to quickly look through a codebase in the terminal. If you need
+to go through a lot of logs, you will enjoy [ripgreg](https://github.com/BurntSushi/ripgrep).
+
 
 
 # License
 
-This repository is released into the public domain. You can freely reuse any part of it
+This code in this repository is released into the public domain. You can freely reuse any part of it
 and you don't even need to say where you found it! See [the LICENSE](LICENSE) for more information.
 
-pl: https://github.com/PyTorchLightning/pytorch-lightning
-hydra: https://github.com/facebookresearch/hydra
-dora: https://github.com/facebookresearch/dora
+The slides are released under Creative Commons CC-BY-NC.
+
+
+
+[pl]: https://github.com/PyTorchLightning/pytorch-lightning
+[hydra]: https://github.com/facebookresearch/hydra
+[dora]: https://github.com/facebookresearch/dora
+[slides]: https://ai.honu.io/presentations/dnn_theo_practice.pdf
