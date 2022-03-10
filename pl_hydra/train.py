@@ -35,7 +35,7 @@ class MainModule(pl.LightningModule):
         x, y = batch
         scores = self(x)
         loss = F.cross_entropy(scores, y)
-        self.log('train_loss', loss, on_epoch=True)
+        self.log('train_loss', loss, on_epoch=True, prog_bar=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -53,14 +53,17 @@ class MainModule(pl.LightningModule):
 
 
 class MyLogger(Callback):
-    def on__epoch_end(self, trainer, pl_module):
+    def on_train_epoch_end(self, trainer, pl_module):
         metrics = trainer.callback_metrics
-        print(metrics.keys())
+        if 'train_loss' not in metrics:
+            # PL makes a first dummy valid only epoch for debugging.
+            return
         logger.info(
-            'End of epoch %d, valid loss %.4f, acc %.2%',
+            'End of epoch %d, train loss %.4f, valid loss %.4f, acc %.1f',
             trainer.current_epoch,
+            metrics['train_loss'],
             metrics['valid_loss'],
-            metrics['valid_acc'])
+            100 * metrics['valid_acc'])
 
 
 @hydra.main(config_path="conf", config_name="config")
