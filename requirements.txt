@@ -1,0 +1,6 @@
+colorlog
+torch
+torchvision
+pytorch_lightning
+# Dora is an experiment management framework, useful to manage large grid searches
+git+ssh://git@github.com/facebookresearch/dora#egg=dora-search

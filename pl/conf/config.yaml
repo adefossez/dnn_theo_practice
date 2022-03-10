@@ -1,0 +1,56 @@
+optim:
+  lr: 0.1
+  weight_decay: 1e-3
+
+restart: false
+model: resnet18
+data:
+  root: ./data
+  batch_size: 32
+
+save_model: # Passed to PyTorch Lightning's ModelCheckpoint callback.
+  save_top_k: 1
+  monitor: "val_loss_epoch"
+  save_last: True
+
+# These flags are passed to the PyTorch Lightning Trainer - add
+# any extra customization here!
+trainer:
+  max_epochs: 100
+
+# Hydra config
+hydra:
+  run:
+    dir: ./outputs/exp_${hydra.job.override_dirname}
+  job:
+    config:
+      # configuration for the ${hydra.job.override_dirname} runtime variable
+      override_dirname:
+        kv_sep: '='
+        item_sep: ','
+        # Remove all paths, as the / in them would mess up things
+        # Remove params that would not impact the training itself
+        # Remove all slurm and submit params.
+        # This is ugly I know...
+        exclude_keys: [restart, data.root]
+  job_logging:
+    formatters:
+      colorlog:
+        datefmt: "%m-%d %H:%M:%S"
+    handlers:
+      file:
+        class: logging.FileHandler
+        mode: w
+        formatter: colorlog
+        filename: trainer.log
+      console:
+        class: logging.StreamHandler
+        formatter: colorlog
+        stream: ext://sys.stderr
+
+  hydra_logging:
+    handlers:
+      console:
+        class: logging.StreamHandler
+        formatter: colorlog
+        stream: ext://sys.stderr
