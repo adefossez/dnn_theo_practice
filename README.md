@@ -1,7 +1,7 @@
 # DNN Training, from theory to practice
 
-This repository is complementary to the deep learning training class given
-to les Mines PariTech on the 11th of March 2022.
+This repository is complementary to the deep learning training lesson given
+to les Mines ParisTech on the 11th of March 2022 as part of the Large Scale Machine Learning class.
 
 You can find [here the slides of the class][slides].
 
