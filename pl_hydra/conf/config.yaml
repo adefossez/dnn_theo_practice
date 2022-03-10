@@ -1,3 +1,7 @@
+defaults:
+  - override hydra/job_logging: colorlog
+  - override hydra/hydra_logging: colorlog
+
 optim:
   lr: 0.1
   weight_decay: 1e-3
@@ -17,6 +21,9 @@ save_model: # Passed to PyTorch Lightning's ModelCheckpoint callback.
 # any extra customization here!
 trainer:
   max_epochs: 100
+  gpus: 0  # set to 1 to use gpus, or more for data parallel
+  strategy: dp  # use DataParallel. You might need DDP at some point, but this makes
+                # everything a bit more complex.
 
 # Hydra config
 hydra:

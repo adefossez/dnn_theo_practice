@@ -14,7 +14,7 @@ from torchvision import models
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import Callback, ModelCheckpoint
 
-from pl.data import DataModule
+from pl_hydra.data import DataModule
 
 
 logger = logging.getLogger(__name__)
@@ -35,7 +35,7 @@ class MainModule(pl.LightningModule):
         x, y = batch
         scores = self(x)
         loss = F.cross_entropy(scores, y)
-        self.log('train_loss', loss, per_epoch=True)
+        self.log('train_loss', loss, on_epoch=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -71,7 +71,7 @@ def main(cfg):
     # path to be absolute and not relative.
     cfg.data.root = hydra.utils.to_absolute_path(cfg.data.root)
     data = DataModule(**cfg.data)
-    module = MainModule(10)
+    module = MainModule(10, cfg)
 
     root = Path('.')
     checkpoint_callback = ModelCheckpoint(monitor='valid_loss', save_last=True)
@@ -91,3 +91,12 @@ def main(cfg):
 
     )
     trainer.fit(module, data)
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except Exception:
+        # Make sure any exception is logged here.
+        logger.exception("Exception happened during training")
+        raise
