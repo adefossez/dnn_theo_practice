@@ -115,7 +115,6 @@ is a nice way to quickly look through a codebase in the terminal. If you need
 to go through a lot of logs, you will enjoy [ripgreg](https://github.com/BurntSushi/ripgrep).
 
 
-
 # License
 
 This code in this repository is released into the public domain. You can freely reuse any part of it
