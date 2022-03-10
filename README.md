@@ -50,7 +50,8 @@ In any case it is good to have an idea of how things work under the hood!
 ## PyTorch-Lightning training pipeline
 
 Insite the `pl_hydra` folder, I provide the same pipeline, but using PyTorch-Lightning along with [Hydra][hydra],
-as an alternative to `argparse`.
+as an alternative to `argparse`. Have a look at [pl_hydra/train.py](pl_hydra/train.py) to see
+the differences with the previous implementation.
 
 ```
 python -m pl_hydra.train optim.lr=0.1 model=mobilenet_v2
