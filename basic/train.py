@@ -211,6 +211,9 @@ def main():
 
         pkg = {
             'history': history,
+            # Store the state dict, not the model itself directly. This is more robust
+            # to code change in the model class. On loading, you can use the `args`
+            # stored to instantiate again the model with the right hyperparameters.
             'model_state': model.state_dict(),
             'optimizer_state': optimizer.state_dict(),
             # Storing args is a great idea for the future. You will most likely store
