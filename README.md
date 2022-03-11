@@ -10,7 +10,7 @@ You can find [here the slides of the class][slides].
 To get started, clone it and prepare a new virtual env.
 
 ```
-git clone
+git clone https://github.com/adefossez/dnn_theo_practice
 cd dnn_theo_practice
 python3 -m venv env
 source env/bin/activate
